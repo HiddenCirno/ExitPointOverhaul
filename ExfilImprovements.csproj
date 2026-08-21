@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <AssemblyName>ExfilImprovements</AssemblyName>
+    <RootNamespace>ExfilImprovements</RootNamespace>
+    <OutputPath>bin</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <NoWarn>CS0618;CS0649;CS0169;CS0414;CS0067;CS0108;CS0114</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Plugin.cs" />
+    <Compile Include="PluginsInfo.cs" />
+    <Compile Include="ExfilBufferBehaviour.cs" />
+    <Compile Include="Patches\ExfilUnlockPatch.cs" />
+    <Compile Include="Patches\ExfilBufferPatch.cs" />
+    <Compile Include="Patches\FlareHintPatch.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="I:/TKF/EscapeFromTarkov_Data/Managed\Assembly-CSharp.dll"><Private>false</Private></Reference>
+    <Reference Include="I:/TKF/EscapeFromTarkov_Data/Managed\Comfort.dll"><Private>false</Private></Reference>
+    <Reference Include="I:/TKF/EscapeFromTarkov_Data/Managed\Sirenix.Serialization.dll"><Private>false</Private></Reference>
+    <Reference Include="I:/TKF/EscapeFromTarkov_Data/Managed\Unity.TextMeshPro.dll"><Private>false</Private></Reference>
+    <Reference Include="I:/TKF/EscapeFromTarkov_Data/Managed\UnityEngine.UI.dll"><Private>false</Private></Reference>
+    <Reference Include="I:/TKF/EscapeFromTarkov_Data/Managed\UnityEngine.dll"><Private>false</Private></Reference>
+    <Reference Include="I:/TKF/EscapeFromTarkov_Data/Managed\UnityEngine.CoreModule.dll"><Private>false</Private></Reference>
+    <Reference Include="I:/TKF/EscapeFromTarkov_Data/Managed\UnityEngine.PhysicsModule.dll"><Private>false</Private></Reference>
+    <Reference Include="I:/TKF/EscapeFromTarkov_Data/Managed\UnityEngine.IMGUIModule.dll"><Private>false</Private></Reference>
+    <Reference Include="I:/TKF/EscapeFromTarkov_Data/Managed\UnityEngine.TextRenderingModule.dll"><Private>false</Private></Reference>
+    <Reference Include="I:/TKF/BepInEx/core\0Harmony.dll"><Private>false</Private></Reference>
+    <Reference Include="I:/TKF/BepInEx/core\BepInEx.dll"><Private>false</Private></Reference>
+  </ItemGroup>
+</Project>

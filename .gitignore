@@ -1,0 +1,10 @@
+# 构建产物
+bin/
+obj/
+*.dll
+*.dll1
+
+# IDE
+.vs/
+.idea/
+*.user
