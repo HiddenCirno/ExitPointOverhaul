@@ -19,6 +19,8 @@ namespace ExfilImprovements
         public static ConfigEntry<bool> EnableAllExits;
         /// <summary>信号弹在信号区域内成功起效时显示通知。</summary>
         public static ConfigEntry<bool> EnableFlareHint;
+        /// <summary>双击 O 撤离点列表解除高度限制（容器自适应内容，条目完整显示）。</summary>
+        public static ConfigEntry<bool> EnableUnlimitHeight;
 
         private static GameObject _host;
 
@@ -26,14 +28,34 @@ namespace ExfilImprovements
         {
             LogSource = Logger;
 
+            // 先加载多语言词典并绑定"配置菜单语言"项，后续配置的 DispName/Description 按所选语言显示
+            CfgLocaleManager.Initialize(Config);
+
             EnableBuffer = Config.Bind("Exfil", "EnableBuffer", true,
-                "为撤离点增加确认缓冲：进入撤离区域后不立即开始撤离计时，按住原版互动键（默认 F）开始缓冲倒计时，松开取消，倒计时结束撤离点开放（参考转移点交互）。");
+                new ConfigDescription(
+                    CfgLocaleManager.Get("cfg_enable_buffer_desc"),
+                    null,
+                    new ConfigurationManagerAttributes { DispName = CfgLocaleManager.Get("cfg_enable_buffer_name") }));
             BufferSeconds = Config.Bind("Exfil", "BufferSeconds", 3f,
-                "缓冲倒计时时长（秒）。按住互动键后倒计时，倒计时结束撤离点进入正常开放状态（开始 ExfiltrationTime 撤离计时）。");
+                new ConfigDescription(
+                    CfgLocaleManager.Get("cfg_buffer_seconds_desc"),
+                    null,
+                    new ConfigurationManagerAttributes { DispName = CfgLocaleManager.Get("cfg_buffer_seconds_name") }));
             EnableAllExits = Config.Bind("Exfil", "EnableAllExits", true,
-                "所有撤离点对 PMC/SCAV 全部开放（InfiltrationMatch 恒通过）且不因概率失效（RollChance 恒通过）。");
+                new ConfigDescription(
+                    CfgLocaleManager.Get("cfg_enable_all_exits_desc"),
+                    null,
+                    new ConfigurationManagerAttributes { DispName = CfgLocaleManager.Get("cfg_enable_all_exits_name") }));
             EnableFlareHint = Config.Bind("Exfil", "EnableFlareHint", true,
-                "信号弹在信号区域内被成功接收（类型匹配 + 发射位置在区域内）时，向玩家显示通知提示。");
+                new ConfigDescription(
+                    CfgLocaleManager.Get("cfg_enable_flare_hint_desc"),
+                    null,
+                    new ConfigurationManagerAttributes { DispName = CfgLocaleManager.Get("cfg_enable_flare_hint_name") }));
+            EnableUnlimitHeight = Config.Bind("Exfil", "EnableUnlimitHeight", true,
+                new ConfigDescription(
+                    CfgLocaleManager.Get("cfg_enable_unlimit_height_desc"),
+                    null,
+                    new ConfigurationManagerAttributes { DispName = CfgLocaleManager.Get("cfg_enable_unlimit_height_name") }));
 
             _host = new GameObject("ExfilImprovementsHost", typeof(ExfilBufferBehaviour));
             Object.DontDestroyOnLoad(_host);

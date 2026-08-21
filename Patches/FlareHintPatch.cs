@@ -44,7 +44,7 @@ namespace ExfilImprovements.Patches
             if (set != null && set.Contains(myPlayer.ProfileId))
             {
                 NotificationManager.DisplayMessageNotification(
-                    "信号弹已起效，撤离点可通行！",
+                    CfgLocaleManager.Get("exfil_flare_success_notify"),
                     ENotificationDurationType.Default,
                     ENotificationIconType.Default,
                     null);
@@ -87,7 +87,7 @@ namespace ExfilImprovements.Patches
             if (set != null && set.Contains(myPlayer.ProfileId))
             {
                 NotificationManager.DisplayMessageNotification(
-                    "信号弹已起效，撤离点可通行！",
+                    CfgLocaleManager.Get("exfil_flare_success_notify"),
                     ENotificationDurationType.Default,
                     ENotificationIconType.Default,
                     null);

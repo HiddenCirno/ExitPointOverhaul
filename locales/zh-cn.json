@@ -1,0 +1,21 @@
+{
+    "Language": "简体中文",
+    "Translate": {
+        "cfg_language_name": "配置菜单语言",
+        "cfg_language_desc": "更改本插件 F12 配置菜单与局内通知的显示语言。F12 菜单需重启游戏生效。",
+
+        "cfg_enable_buffer_name": "撤离点确认缓冲",
+        "cfg_enable_buffer_desc": "为撤离点增加确认缓冲：进入撤离区域后不立即开始撤离计时，按住原版互动键（默认 F）开始缓冲倒计时，松开取消，倒计时结束撤离点开放（参考转移点交互）。",
+        "cfg_buffer_seconds_name": "缓冲倒计时时长",
+        "cfg_buffer_seconds_desc": "缓冲倒计时时长（秒）。按住互动键后倒计时，倒计时结束撤离点进入正常开放状态（开始 ExfiltrationTime 撤离计时）。",
+        "cfg_enable_all_exits_name": "全部撤离点开放",
+        "cfg_enable_all_exits_desc": "所有撤离点对 PMC/SCAV 全部开放（InfiltrationMatch 恒通过）且不因概率失效（RollChance 恒通过）。",
+        "cfg_enable_flare_hint_name": "信号弹起效提示",
+        "cfg_enable_flare_hint_desc": "信号弹在信号区域内被成功接收（类型匹配 + 发射位置在区域内）时，向玩家显示通知提示。",
+        "cfg_enable_unlimit_height_name": "O 列表解除高度限制",
+        "cfg_enable_unlimit_height_desc": "双击 O 撤离点列表解除高度限制：给容器/面板加 ContentSizeFitter 垂直自适应，停用裁剪/固定高度约束，让所有撤离点/转移点完整堆叠显示（条目多时超出屏幕的部分在屏幕外）。",
+
+        "exfil_enter_hint": "按住互动键开始撤离",
+        "exfil_flare_success_notify": "信号弹已起效，撤离点可通行！"
+    }
+}

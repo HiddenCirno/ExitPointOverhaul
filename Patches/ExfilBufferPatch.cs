@@ -1,4 +1,5 @@
 using EFT;
+using EFT.Communications;
 using EFT.Interactive;
 using EFT.Interactive.SecretExfiltrations;
 using EFT.UI;
@@ -74,6 +75,17 @@ namespace ExfilImprovements.Patches
                 Player = player,
                 Point = __instance
             };
+            // 进入撤离区域提示（与转移点一致：长按互动提示；文案走插件本地化词典）
+            try
+            {
+                NotificationManager.DisplaySingletonNotification(
+                    CfgLocaleManager.Get("exfil_enter_hint"),
+                    ENotificationDurationType.Default);
+            }
+            catch (System.Exception ex)
+            {
+                Plugin.LogSource.LogError($"[{PluginsInfo.NAME}] 进入提示失败: {ex}");
+            }
             // 触发原版交互刷新：InteractionInjectPatch 会注入"互动"按钮
             try
             {
