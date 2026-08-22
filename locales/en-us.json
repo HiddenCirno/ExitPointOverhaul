@@ -8,13 +8,12 @@
         "cfg_enable_buffer_desc": "Adds a confirmation buffer to exfiltration points: after entering the zone, the extraction countdown does not start immediately. Hold the interact key to start the buffer countdown; release to cancel; when it finishes, the point opens (same interaction as transit points).",
         "cfg_buffer_seconds_name": "Buffer Seconds",
         "cfg_buffer_seconds_desc": "Buffer countdown duration in seconds. After holding the interact key the countdown runs; when it finishes the exfiltration point opens and the normal ExfiltrationTime extraction countdown starts.",
-        "cfg_enable_all_exits_name": "Open All Exfiltration Points",
-        "cfg_enable_all_exits_desc": "All exfiltration points are available to PMC and SCAV (InfiltrationMatch always passes) and never fail by chance (RollChance always passes).",
+        "cfg_enable_always_open_name": "Exfiltration Points Always Open",
+        "cfg_enable_always_open_desc": "Exfiltration points never fail by chance (RollChance always passes) - never set to NotPresent by probability.",
+        "cfg_enable_cross_faction_name": "Share All Exfiltration Points (PMC/SCAV)",
+        "cfg_enable_cross_faction_desc": "PMC and SCAV can use all exfiltration points (InfiltrationMatch always passes) - cross-faction access to Scav/PMC exits.",
         "cfg_enable_flare_hint_name": "Flare Success Hint",
         "cfg_enable_flare_hint_desc": "Shows a notification when a flare is successfully received inside a flare zone (type matches and fired inside the zone).",
-        "cfg_enable_unlimit_height_name": "Unlimit O-List Height",
-        "cfg_enable_unlimit_height_desc": "Removes the height limit of the double-O exfiltration list: adds ContentSizeFitter vertical auto-fit to the container/panel and disables clipping/fixed height so all points stack fully (entries beyond the screen are drawn off-screen).",
-
         "exfil_enter_hint": "Hold the interact key to start exfiltration",
         "exfil_flare_success_notify": "Flare activated - exfiltration point is now passable!"
     }

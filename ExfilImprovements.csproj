@@ -23,7 +23,6 @@
     <Compile Include="Patches\ExfilUnlockPatch.cs" />
     <Compile Include="Patches\ExfilBufferPatch.cs" />
     <Compile Include="Patches\FlareHintPatch.cs" />
-    <Compile Include="Patches\UnlimitHeightPatch.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="locales\**\*">

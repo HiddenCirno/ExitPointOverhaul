@@ -13,10 +13,14 @@ using UnityEngine.UI;
 namespace ExfilImprovements.Patches
 {
     /// <summary>
-    /// 全员所有撤离点开放：InfiltrationMatch 恒通过（PMC/SCAV 都能进任何撤离点），
-    /// RollChance 恒通过（不因概率把撤离点设为 NotPresent）。
-    /// 三个 InfiltrationMatch 都要 patch——它是虚方法，玩家身份不同会分派到不同实现
-    /// （基类 ExfiltrationPoint / ScavExfiltrationPoint / SharedExfiltrationPoint）。
+    /// 两个独立配置，互不影响：
+    ///   - EnableCrossFaction（PMC/SCAV 共用所有撤离点）：InfiltrationMatch 恒通过
+    ///     （跨势力进入），ForceOpenPatch/EligiblePointsPatch 让 PMC 也能在 Scav 撤离点
+    ///     实际撤离并显示在 O 列表。三个 InfiltrationMatch 都要 patch——它是虚方法，
+    ///     玩家身份不同会分派到不同实现（基类 ExfiltrationPoint / ScavExfiltrationPoint /
+    ///     SharedExfiltrationPoint）。
+    ///   - EnableAlwaysOpen（撤离点恒定开放）：RollChance 恒通过，不因概率把撤离点设为
+    ///     NotPresent。
     /// </summary>
     public static class ExfilUnlockPatch
     {
@@ -25,7 +29,7 @@ namespace ExfilImprovements.Patches
         {
             public static bool Prefix(ref bool __result)
             {
-                if (!Plugin.EnableAllExits.Value)
+                if (!Plugin.EnableCrossFaction.Value)
                 {
                     return true;
                 }
@@ -39,7 +43,7 @@ namespace ExfilImprovements.Patches
         {
             public static bool Prefix(ref bool __result)
             {
-                if (!Plugin.EnableAllExits.Value)
+                if (!Plugin.EnableCrossFaction.Value)
                 {
                     return true;
                 }
@@ -53,7 +57,7 @@ namespace ExfilImprovements.Patches
         {
             public static bool Prefix(ref bool __result)
             {
-                if (!Plugin.EnableAllExits.Value)
+                if (!Plugin.EnableCrossFaction.Value)
                 {
                     return true;
                 }
@@ -67,7 +71,7 @@ namespace ExfilImprovements.Patches
         {
             public static bool Prefix(ref bool __result)
             {
-                if (!Plugin.EnableAllExits.Value)
+                if (!Plugin.EnableAlwaysOpen.Value)
                 {
                     return true;
                 }
@@ -91,7 +95,7 @@ namespace ExfilImprovements.Patches
         {
             public static void Postfix(ExfiltrationPoint __instance, Player player)
             {
-                if (!Plugin.EnableAllExits.Value)
+                if (!Plugin.EnableCrossFaction.Value)
                 {
                     return;
                 }
@@ -101,15 +105,19 @@ namespace ExfilImprovements.Patches
                 }
                 try
                 {
-                    // 有撤离要求未满足（如付费/交物品）则不强开，尊重撤离点自身要求
+                    // 有撤离要求未满足（如付费/交物品/供电未恢复）则不强开，尊重撤离点自身要求
                     if (__instance.UnmetRequirements(player).Any())
                     {
                         return;
                     }
-                    if (__instance.Status == EExfiltrationStatus.RegularMode
-                        || __instance.Status == EExfiltrationStatus.Countdown)
+                    // 只在"应开放但还没开放"的 UncompleteRequirements / NotPresent 状态强开。
+                    // 排除 Pending——它是从未 LoadSettings 的未初始化副本（场景里同名但未初始化的
+                    // Scav 撤离点，如实验室电梯的 Scav 副本），Status=Pending、Reqs=空。若不排除，
+                    // 该副本会被强开成 RegularMode，玩家进入走缓冲后无条件撤离（绕过拉闸/按钮前提）。
+                    if (__instance.Status != EExfiltrationStatus.UncompleteRequirements
+                        && __instance.Status != EExfiltrationStatus.NotPresent)
                     {
-                        return; // 已在正常撤离流程
+                        return; // RegularMode/Countdown 已在流程中；Pending 未配置副本不强开
                     }
                     __instance.SetStatusLogged(EExfiltrationStatus.RegularMode, "ExfilImprovements.ForceOpen");
                 }
@@ -131,7 +139,7 @@ namespace ExfilImprovements.Patches
         {
             public static bool Prefix(ExfiltrationController __instance, ref ExfiltrationPoint[] __result)
             {
-                if (!Plugin.EnableAllExits.Value)
+                if (!Plugin.EnableCrossFaction.Value)
                 {
                     return true;
                 }

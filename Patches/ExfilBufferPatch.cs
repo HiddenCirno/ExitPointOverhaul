@@ -24,7 +24,12 @@ namespace ExfilImprovements.Patches
         ///   - 秘密撤离点 SecretExfiltrationPoint（需交指定物品并发现）；
         ///   - V-Ex 黑车撤离点：交付资金上车撤离，是唯一限制人数的撤离点
         ///     （Settings.PlayersCount > 0，对应 AbstractGame 的 BattleUiPmcCount 座位 UI）；
-        ///   - Manual 类型（EExfiltrationType.Manual → AwaitsManualActivation，需激活开关）。
+        ///   - Manual 类型（EExfiltrationType.Manual → AwaitsManualActivation，需激活开关）；
+        ///   - 需要恢复供电（WorldEventRequirement，如储备站 D2 / 实验室电梯 / 海关 ZB-013）：
+        ///     撤离点激活依赖 GameTrigger（TriggerZone→HandlerExfiltration→ExternalSetStatus）把 Status
+        ///     置为 RegularMode/Countdown。WorldEventRequirement.Met 只看 Status（循环判定），缓冲完成
+        ///     直接调 Proceed 会把"供电未恢复"时 Status 已被自动激活的撤离点放行，绕过了供电前提，
+        ///     所以这类撤离点必须跳过缓冲，完全交给原版 Proceed 决定。
         /// 其余普通条件撤离点（物品/排除物品/合作等）仍走缓冲，但条件本身不修改。
         /// </summary>
         public static bool IsSecondaryInteractionExfil(ExfiltrationPoint point)
@@ -32,6 +37,13 @@ namespace ExfilImprovements.Patches
             if (point == null)
             {
                 return false;
+            }
+            // 未初始化副本（从未 LoadSettings，如场景里同名但从未初始化的 Scav 撤离点，
+            // 如实验室电梯的 Scav 副本）：Status 仍是默认 Pending，无任何配置/要求。
+            // 跳过缓冲走原版，避免缓冲完成后误撤离（且 ForceOpenPatch 也不会强开它）。
+            if (point.Status == EExfiltrationStatus.Pending)
+            {
+                return true;
             }
             if (point is SecretExfiltrationPoint)
             {
@@ -46,6 +58,17 @@ namespace ExfilImprovements.Patches
                 if (point.Settings.PlayersCount > 0) // V-Ex 黑车（唯一限人数撤离点）
                 {
                     return true;
+                }
+            }
+            // 需要恢复供电的撤离点：跳过缓冲，保持原版（供电未满足时原版 Proceed 会挡）
+            if (point.Requirements != null)
+            {
+                for (int i = 0; i < point.Requirements.Length; i++)
+                {
+                    if (point.Requirements[i] is WorldEventRequirement)
+                    {
+                        return true;
+                    }
                 }
             }
             return false;

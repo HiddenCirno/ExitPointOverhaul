@@ -15,12 +15,12 @@ namespace ExfilImprovements
         public static ConfigEntry<bool> EnableBuffer;
         /// <summary>缓冲倒计时时长（秒），倒计时结束后撤离点进入开放状态。</summary>
         public static ConfigEntry<float> BufferSeconds;
-        /// <summary>所有撤离点对 PMC/SCAV 全部开放，且不因概率失效。</summary>
-        public static ConfigEntry<bool> EnableAllExits;
+        /// <summary>撤离点恒定开放：RollChance 恒通过，撤离点不因概率失效设为 NotPresent。</summary>
+        public static ConfigEntry<bool> EnableAlwaysOpen;
+        /// <summary>PMC/SCAV 共用所有撤离点：InfiltrationMatch 恒通过，跨势力进入并可用。</summary>
+        public static ConfigEntry<bool> EnableCrossFaction;
         /// <summary>信号弹在信号区域内成功起效时显示通知。</summary>
         public static ConfigEntry<bool> EnableFlareHint;
-        /// <summary>双击 O 撤离点列表解除高度限制（容器自适应内容，条目完整显示）。</summary>
-        public static ConfigEntry<bool> EnableUnlimitHeight;
 
         private static GameObject _host;
 
@@ -41,21 +41,21 @@ namespace ExfilImprovements
                     CfgLocaleManager.Get("cfg_buffer_seconds_desc"),
                     null,
                     new ConfigurationManagerAttributes { DispName = CfgLocaleManager.Get("cfg_buffer_seconds_name") }));
-            EnableAllExits = Config.Bind("Exfil", "EnableAllExits", true,
+            EnableAlwaysOpen = Config.Bind("Exfil", "EnableAlwaysOpen", true,
                 new ConfigDescription(
-                    CfgLocaleManager.Get("cfg_enable_all_exits_desc"),
+                    CfgLocaleManager.Get("cfg_enable_always_open_desc"),
                     null,
-                    new ConfigurationManagerAttributes { DispName = CfgLocaleManager.Get("cfg_enable_all_exits_name") }));
+                    new ConfigurationManagerAttributes { DispName = CfgLocaleManager.Get("cfg_enable_always_open_name") }));
+            EnableCrossFaction = Config.Bind("Exfil", "EnableCrossFaction", true,
+                new ConfigDescription(
+                    CfgLocaleManager.Get("cfg_enable_cross_faction_desc"),
+                    null,
+                    new ConfigurationManagerAttributes { DispName = CfgLocaleManager.Get("cfg_enable_cross_faction_name") }));
             EnableFlareHint = Config.Bind("Exfil", "EnableFlareHint", true,
                 new ConfigDescription(
                     CfgLocaleManager.Get("cfg_enable_flare_hint_desc"),
                     null,
                     new ConfigurationManagerAttributes { DispName = CfgLocaleManager.Get("cfg_enable_flare_hint_name") }));
-            EnableUnlimitHeight = Config.Bind("Exfil", "EnableUnlimitHeight", true,
-                new ConfigDescription(
-                    CfgLocaleManager.Get("cfg_enable_unlimit_height_desc"),
-                    null,
-                    new ConfigurationManagerAttributes { DispName = CfgLocaleManager.Get("cfg_enable_unlimit_height_name") }));
 
             _host = new GameObject("ExfilImprovementsHost", typeof(ExfilBufferBehaviour));
             Object.DontDestroyOnLoad(_host);
@@ -72,7 +72,8 @@ namespace ExfilImprovements
             }
 
             LogSource.LogInfo($"[{PluginsInfo.NAME}] 加载完成。EnableBuffer={EnableBuffer.Value}，" +
-                $"EnableAllExits={EnableAllExits.Value}，EnableFlareHint={EnableFlareHint.Value}");
+                $"EnableAlwaysOpen={EnableAlwaysOpen.Value}，EnableCrossFaction={EnableCrossFaction.Value}，" +
+                $"EnableFlareHint={EnableFlareHint.Value}");
         }
     }
 }
